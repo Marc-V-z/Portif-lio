@@ -6,7 +6,7 @@ const verifyToken = require("../middleware/auth");
 // GET /projects - lista pública (grid da home)
 router.get("/", async (req, res) => {
   const result = await pool.query(
-    "SELECT id, slug, title, cover_image FROM projects ORDER BY created_at DESC"
+    "SELECT id, slug, title, cover_image, background_color FROM projects ORDER BY created_at DESC"
   );
   res.json(result.rows);
 });
