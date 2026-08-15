@@ -5,25 +5,26 @@ const pool = require("../db");
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
-  const hash = await bcrypt.hash(password, 10);
-  const result = await pool.query(
-    "INSERT INTO users (email, password) VALUES ($1,$2) RETURNING *",
-    [email, hash]
-  );
-  res.json(result.rows[0]);
-});
-
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = await pool.query("SELECT * FROM users WHERE email=$1", [email]);
-  if (user.rows.length === 0) return res.status(400).send("Usuário não encontrado");
 
-  const valid = await bcrypt.compare(password, user.rows[0].password);
-  if (!valid) return res.status(400).send("Senha inválida");
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email e senha são obrigatórios" });
+  }
 
-  const token = jwt.sign({ id: user.rows[0].id }, "segredo");
+  const result = await pool.query("SELECT * FROM admins WHERE email = $1", [email]);
+  const admin = result.rows[0];
+
+  if (!admin) {
+    return res.status(400).json({ error: "Credenciais inválidas" });
+  }
+
+  const valid = await bcrypt.compare(password, admin.password);
+  if (!valid) {
+    return res.status(400).json({ error: "Credenciais inválidas" });
+  }
+
+  const token = jwt.sign({ id: admin.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
   res.json({ token });
 });
 
