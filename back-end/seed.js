@@ -10,15 +10,18 @@ async function main() {
     process.exit(1);
   }
 
-  const hash = await bcrypt.hash(password, 10);
-
-  await pool.query(
-    "INSERT INTO admins (email, password) VALUES ($1, $2) ON CONFLICT (email) DO UPDATE SET password = $2",
-    [email, hash]
-  );
-
-  console.log(`Admin criado/atualizado: ${email}`);
-  process.exit(0);
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    await pool.query(
+      "INSERT INTO admins (email, password) VALUES ($1, $2) ON CONFLICT (email) DO UPDATE SET password = $2",
+      [email, hash]
+    );
+    console.log(`Admin criado/atualizado: ${email}`);
+    process.exit(0);
+  } catch (err) {
+    console.error("Falhou ao criar o admin:", err.message);
+    process.exit(1);
+  }
 }
 
 main();

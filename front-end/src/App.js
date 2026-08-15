@@ -15,7 +15,7 @@ function Nav() {
   return (
     <nav className="nav">
       <div className="container nav__row">
-        <Link to="/" className="nav__brand">portfólio</Link>
+        <Link to="/" className="nav__brand">Portfólio</Link>
         <ul className="nav__links">
           <li><Link to="/contact">Contato</Link></li>
           {token ? (
