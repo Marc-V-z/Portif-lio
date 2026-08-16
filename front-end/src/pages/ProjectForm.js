@@ -19,33 +19,41 @@ function ProjectForm() {
 
   useEffect(() => {
     if (!isEditing) return;
-    // a rota pública é por slug; no admin buscamos a lista pra achar o slug a partir do id
-    client.get("/projects").then((res) => {
-      const found = res.data.find((p) => String(p.id) === id);
-      if (!found) return;
-      client.get(`/projects/${found.slug}`).then((full) => {
-        setForm({
-          slug: full.data.slug,
-          title: full.data.title,
-          description: full.data.description || "",
-          cover_image: full.data.cover_image || "",
-          background_image: full.data.background_image || "",
-          background_color: full.data.background_color || "",
-          github_link: full.data.github_link || "",
+    client
+      .get("/projects")
+      .then((res) => {
+        const found = res.data.find((p) => String(p.id) === id);
+        if (!found) return;
+        return client.get(`/projects/${found.slug}`).then((full) => {
+          setForm({
+            slug: full.data.slug,
+            title: full.data.title,
+            description: full.data.description || "",
+            cover_image: full.data.cover_image || "",
+            background_image: full.data.background_image || "",
+            background_color: full.data.background_color || "",
+            github_link: full.data.github_link || "",
+          });
+          setPosts(full.data.posts);
         });
-        setPosts(full.data.posts);
-      });
-    });
+      })
+      .catch((err) => console.error("Erro ao carregar projeto:", err));
   }, [id, isEditing]);
 
   const handleUpload = async (field, file) => {
     if (!file) return;
     setUploading(true);
-    const data = new FormData();
-    data.append("file", file);
-    const res = await client.post("/upload", data);
-    setForm((f) => ({ ...f, [field]: res.data.url }));
-    setUploading(false);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      const res = await client.post("/upload", data);
+      setForm((f) => ({ ...f, [field]: res.data.url }));
+    } catch (err) {
+      console.error("Erro no upload:", err);
+      setError("Falha ao enviar o arquivo.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -60,14 +68,19 @@ function ProjectForm() {
         navigate(`/admin/projeto/${res.data.id}/editar`);
       }
     } catch (err) {
+      console.error("Erro ao salvar projeto:", err);
       setError("Não foi possível salvar. Confira o slug (precisa ser único).");
     }
   };
 
   const handleDeletePost = async (postId) => {
     if (!window.confirm("Excluir este post?")) return;
-    await client.delete(`/posts/${postId}`);
-    setPosts((p) => p.filter((post) => post.id !== postId));
+    try {
+      await client.delete(`/posts/${postId}`);
+      setPosts((p) => p.filter((post) => post.id !== postId));
+    } catch (err) {
+      console.error("Erro ao excluir post:", err);
+    }
   };
 
   return (

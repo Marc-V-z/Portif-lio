@@ -4,17 +4,31 @@ import client from "../api/client";
 
 function AdminDashboard() {
   const [projects, setProjects] = useState([]);
+  const [error, setError] = useState(false);
 
   const load = () => {
-    client.get("/projects").then((res) => setProjects(res.data));
+    client
+      .get("/projects")
+      .then((res) => {
+        setProjects(res.data);
+        setError(false);
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar projetos:", err);
+        setError(true);
+      });
   };
 
   useEffect(load, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Excluir este projeto e todos os posts dele?")) return;
-    await client.delete(`/projects/${id}`);
-    load();
+    try {
+      await client.delete(`/projects/${id}`);
+      load();
+    } catch (err) {
+      console.error("Erro ao excluir projeto:", err);
+    }
   };
 
   return (
@@ -23,6 +37,8 @@ function AdminDashboard() {
         <h2>Projetos</h2>
         <Link className="btn btn--primary" to="/admin/projeto/novo">Novo projeto</Link>
       </div>
+
+      {error && <p className="form__error">Não foi possível carregar os projetos.</p>}
 
       {projects.length === 0 ? (
         <p className="empty-state">Nenhum projeto ainda.</p>

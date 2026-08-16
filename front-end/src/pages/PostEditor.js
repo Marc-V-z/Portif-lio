@@ -21,11 +21,14 @@ function PostEditor() {
 
   useEffect(() => {
     if (!isEditing) return;
-    client.get(`/posts/${id}`).then((res) => {
-      setTitle(res.data.title || "");
-      setBlocks(res.data.media.length ? res.data.media : [emptyBlock()]);
-      setResolvedProjectId(res.data.project_id);
-    });
+    client
+      .get(`/posts/${id}`)
+      .then((res) => {
+        setTitle(res.data.title || "");
+        setBlocks(res.data.media.length ? res.data.media : [emptyBlock()]);
+        setResolvedProjectId(res.data.project_id);
+      })
+      .catch((err) => console.error("Erro ao carregar post:", err));
   }, [id, isEditing]);
 
   const updateBlock = (index, changes) => {
@@ -37,11 +40,17 @@ function PostEditor() {
   const handleFileUpload = async (index, file) => {
     if (!file) return;
     setUploadingIndex(index);
-    const data = new FormData();
-    data.append("file", file);
-    const res = await client.post("/upload", data);
-    updateBlock(index, { content: res.data.url });
-    setUploadingIndex(null);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      const res = await client.post("/upload", data);
+      updateBlock(index, { content: res.data.url });
+    } catch (err) {
+      console.error("Erro no upload:", err);
+      setError("Falha ao enviar o arquivo.");
+    } finally {
+      setUploadingIndex(null);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -60,6 +69,7 @@ function PostEditor() {
         navigate(`/admin/projeto/${projectId}/editar`);
       }
     } catch (err) {
+      console.error("Erro ao salvar post:", err);
       setError("Não foi possível salvar o post.");
     }
   };
