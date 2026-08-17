@@ -147,6 +147,19 @@ h1, h2, h3, h4 {
 .block-row select { flex: 0 0 110px; }
 .block-row .field { flex: 1; }
 
+.color-field-row { display: flex; gap: 10px; align-items: center; }
+.color-field-row input[type="color"] {
+  width: 44px;
+  height: 40px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-raised);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.color-field-row input[type="text"] { flex: 1; }
+
 /* ============ Responsive ============ */
 @media (max-width: 640px) {
   .nav__row { flex-direction: column; align-items: flex-start; gap: 12px; }

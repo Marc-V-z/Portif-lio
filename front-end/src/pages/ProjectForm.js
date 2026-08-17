@@ -111,7 +111,19 @@ function ProjectForm() {
         </div>
         <div className="field">
           <label>Cor de fundo (usada se não tiver imagem de fundo)</label>
-          <input value={form.background_color} onChange={(e) => setForm({ ...form, background_color: e.target.value })} placeholder="#2c261e" />
+          <div className="color-field-row">
+            <input
+              type="color"
+              value={form.background_color || "#2c261e"}
+              onChange={(e) => setForm({ ...form, background_color: e.target.value })}
+            />
+            <input
+              type="text"
+              value={form.background_color}
+              onChange={(e) => setForm({ ...form, background_color: e.target.value })}
+              placeholder="#2c261e"
+            />
+          </div>
         </div>
         <div className="field">
           <label>Link do GitHub (opcional)</label>
