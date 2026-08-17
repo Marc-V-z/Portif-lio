@@ -29,7 +29,7 @@ Portfólio pessoal full-stack: página pública com grade de projetos, uma pági
 ### 1. Clonar o repositório
 
 ```bash
-git clone <url-do-seu-fork>
+git clone https://github.com/Marc-V-z/Portif-lio
 cd Portif-lio
 ```
 
@@ -68,7 +68,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ### 5. Criar seu usuário administrador
 
-Não existe cadastro público (por segurança — é um portfólio de dono único). O login é criado por um script:
+Não existe cadastro predefinido, crie seu próprio personalizado! O login é criado por um script:
 
 ```bash
 node seed.js seuemail@exemplo.com suaSenha
