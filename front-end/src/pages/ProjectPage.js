@@ -22,12 +22,21 @@ function ProjectPage() {
 
   if (!project) return null;
 
-  const heroStyle = project.background_image
-    ? { backgroundImage: `url(${resolveMediaUrl(project.background_image)})` }
-    : { "--project-bg": project.background_color || undefined };
+  const heroStyle = project.theme_image
+    ? { backgroundImage: `url(${resolveMediaUrl(project.theme_image)})` }
+    : { "--project-bg": project.theme_color || undefined };
+
+  const pageBgStyle = {
+    "--page-bg-color": project.page_bg_color || undefined,
+    "--page-bg-image": project.page_bg_image ? `url(${resolveMediaUrl(project.page_bg_image)})` : undefined,
+    "--page-bg-size": project.page_bg_repeat ? "auto" : "cover",
+    "--page-bg-repeat-mode": project.page_bg_repeat ? "repeat" : "no-repeat",
+  };
+
+  const feedStyle = { "--project-accent": project.theme_color || undefined };
 
   return (
-    <div>
+    <div className="page-bg" style={pageBgStyle}>
       <div className="project-hero" style={heroStyle}>
         <div className="container">
           <h1 className="project-hero__title">{project.title}</h1>
@@ -48,7 +57,7 @@ function ProjectPage() {
         {project.posts.length === 0 ? (
           <p className="empty-state">Nenhuma atualização publicada ainda.</p>
         ) : (
-          <div className="post-feed">
+          <div className="post-feed" style={feedStyle}>
             {project.posts.map((post) => (
               <div className="post" key={post.id}>
                 {post.title && <h3 className="post__title">{post.title}</h3>}

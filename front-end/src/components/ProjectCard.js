@@ -2,15 +2,19 @@ import { Link } from "react-router-dom";
 import { resolveMediaUrl } from "../utils/media";
 
 function ProjectCard({ project }) {
+  const coverClass = project.cover_fit === "natural"
+    ? "project-card__cover project-card__cover--natural"
+    : "project-card__cover";
+
   return (
     <Link
       to={`/projeto/${project.slug}`}
       className="project-card"
-      style={{ "--project-accent": project.background_color || undefined }}
+      style={{ "--project-accent": project.theme_color || undefined }}
     >
       {project.cover_image && (
         <img
-          className="project-card__cover"
+          className={coverClass}
           src={resolveMediaUrl(project.cover_image)}
           alt={project.title}
         />

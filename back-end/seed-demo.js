@@ -7,8 +7,12 @@ const demoProjects = [
     title: "Jogo de Plataforma (demo)",
     description: "Um jogo 2D de plataforma feito como projeto de estudo, com física simples de pulo e colisão.",
     cover_image: "https://placehold.co/600x450/e3a94b/1b1815?text=Jogo",
-    background_image: null,
-    background_color: "#2c4a3e",
+    cover_fit: "cover",
+    theme_color: "#2c4a3e",
+    theme_image: null,
+    page_bg_color: "#1b1815",
+    page_bg_image: null,
+    page_bg_repeat: false,
     github_link: "https://github.com",
     posts: [
       {
@@ -25,9 +29,13 @@ const demoProjects = [
     slug: "demo-ilustracoes",
     title: "Ilustrações Digitais (demo)",
     description: "Uma coleção de desenhos digitais feitos ao longo do ano.",
-    cover_image: "https://placehold.co/600x450/8c6a4f/f2ede4?text=Arte",
-    background_image: null,
-    background_color: "#4a3a2c",
+    cover_image: "https://placehold.co/600x800/8c6a4f/f2ede4?text=Arte",
+    cover_fit: "natural",
+    theme_color: "#4a3a2c",
+    theme_image: null,
+    page_bg_color: "#241f1a",
+    page_bg_image: null,
+    page_bg_repeat: false,
     github_link: null,
     posts: [
       {
@@ -51,15 +59,14 @@ async function main() {
 
   try {
     await client.query("BEGIN");
-
-    // Remove qualquer dado de demonstração anterior (identificado pelo prefixo no slug)
     await client.query("DELETE FROM projects WHERE slug LIKE 'demo-%'");
 
     for (const project of demoProjects) {
       const projectResult = await client.query(
-        `INSERT INTO projects (slug, title, description, cover_image, background_image, background_color, github_link)
-         VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
-        [project.slug, project.title, project.description, project.cover_image, project.background_image, project.background_color, project.github_link]
+        `INSERT INTO projects
+          (slug, title, description, cover_image, cover_fit, theme_color, theme_image, page_bg_color, page_bg_image, page_bg_repeat, github_link)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id`,
+        [project.slug, project.title, project.description, project.cover_image, project.cover_fit, project.theme_color, project.theme_image, project.page_bg_color, project.page_bg_image, project.page_bg_repeat, project.github_link]
       );
       const projectId = projectResult.rows[0].id;
 

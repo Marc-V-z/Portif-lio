@@ -5,7 +5,12 @@ import client from "../api/client";
 const blockTypes = ["text", "image", "gif", "video", "link"];
 
 function emptyBlock() {
-  return { type: "text", content: "", order_index: 0 };
+  return { type: "text", content: "", order_index: 0, videoSource: "link" };
+}
+
+function inferVideoSource(block) {
+  if (block.type !== "video" || !block.content) return "link";
+  return /youtube\.com|youtu\.be|vimeo\.com/.test(block.content) ? "link" : "upload";
 }
 
 function PostEditor() {
@@ -25,7 +30,10 @@ function PostEditor() {
       .get(`/posts/${id}`)
       .then((res) => {
         setTitle(res.data.title || "");
-        setBlocks(res.data.media.length ? res.data.media : [emptyBlock()]);
+        const media = res.data.media.length
+          ? res.data.media.map((b) => ({ ...b, videoSource: inferVideoSource(b) }))
+          : [emptyBlock()];
+        setBlocks(media);
         setResolvedProjectId(res.data.project_id);
       })
       .catch((err) => console.error("Erro ao carregar post:", err));
@@ -109,13 +117,35 @@ function PostEditor() {
                   </>
                 ) : block.type === "video" ? (
                   <>
-                    <input
-                      value={block.content}
-                      onChange={(e) => updateBlock(index, { content: e.target.value })}
-                      placeholder="Cole um link do YouTube/Vimeo..."
-                    />
-                    <input type="file" accept="video/*" onChange={(e) => handleFileUpload(index, e.target.files[0])} />
-                    {uploadingIndex === index && <span className="muted">Enviando...</span>}
+                    <div className="toggle-row">
+                      <button
+                        type="button"
+                        className={`btn btn--small ${block.videoSource !== "upload" ? "btn--primary" : ""}`}
+                        onClick={() => updateBlock(index, { videoSource: "link" })}
+                      >
+                        Link (YouTube/Vimeo)
+                      </button>
+                      <button
+                        type="button"
+                        className={`btn btn--small ${block.videoSource === "upload" ? "btn--primary" : ""}`}
+                        onClick={() => updateBlock(index, { videoSource: "upload" })}
+                      >
+                        Enviar arquivo
+                      </button>
+                    </div>
+                    {block.videoSource === "upload" ? (
+                      <>
+                        <input type="file" accept="video/*" onChange={(e) => handleFileUpload(index, e.target.files[0])} />
+                        {uploadingIndex === index && <span className="muted">Enviando...</span>}
+                        {block.content && <span className="muted">{block.content}</span>}
+                      </>
+                    ) : (
+                      <input
+                        value={block.content}
+                        onChange={(e) => updateBlock(index, { content: e.target.value })}
+                        placeholder="Cole um link do YouTube ou Vimeo..."
+                      />
+                    )}
                   </>
                 ) : (
                   <input

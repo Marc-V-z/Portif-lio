@@ -4,7 +4,10 @@ import client from "../api/client";
 
 const emptyForm = {
   slug: "", title: "", description: "",
-  cover_image: "", background_image: "", background_color: "", github_link: "",
+  cover_image: "", cover_fit: "cover",
+  theme_color: "", theme_image: "",
+  page_bg_color: "", page_bg_image: "", page_bg_repeat: false,
+  github_link: "",
 };
 
 function ProjectForm() {
@@ -30,8 +33,12 @@ function ProjectForm() {
             title: full.data.title,
             description: full.data.description || "",
             cover_image: full.data.cover_image || "",
-            background_image: full.data.background_image || "",
-            background_color: full.data.background_color || "",
+            cover_fit: full.data.cover_fit || "cover",
+            theme_color: full.data.theme_color || "",
+            theme_image: full.data.theme_image || "",
+            page_bg_color: full.data.page_bg_color || "",
+            page_bg_image: full.data.page_bg_image || "",
+            page_bg_repeat: full.data.page_bg_repeat || false,
             github_link: full.data.github_link || "",
           });
           setPosts(full.data.posts);
@@ -99,32 +106,88 @@ function ProjectForm() {
           <label>Descrição</label>
           <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </div>
+
         <div className="field">
           <label>Capa (imagem)</label>
           <input type="file" accept="image/*" onChange={(e) => handleUpload("cover_image", e.target.files[0])} />
           {form.cover_image && <span className="muted">{form.cover_image}</span>}
         </div>
         <div className="field">
-          <label>Imagem de fundo da página (opcional)</label>
-          <input type="file" accept="image/*" onChange={(e) => handleUpload("background_image", e.target.files[0])} />
-          {form.background_image && <span className="muted">{form.background_image}</span>}
+          <label>Formato da capa</label>
+          <div className="toggle-row">
+            <button
+              type="button"
+              className={`btn btn--small ${form.cover_fit === "cover" ? "btn--primary" : ""}`}
+              onClick={() => setForm({ ...form, cover_fit: "cover" })}
+            >
+              Quadro fixo
+            </button>
+            <button
+              type="button"
+              className={`btn btn--small ${form.cover_fit === "natural" ? "btn--primary" : ""}`}
+              onClick={() => setForm({ ...form, cover_fit: "natural" })}
+            >
+              Formato da imagem
+            </button>
+          </div>
         </div>
+
+        <h3>Faixa de tema</h3>
         <div className="field">
-          <label>Cor de fundo (usada se não tiver imagem de fundo)</label>
+          <label>Cor do tema</label>
           <div className="color-field-row">
             <input
               type="color"
-              value={form.background_color || "#2c261e"}
-              onChange={(e) => setForm({ ...form, background_color: e.target.value })}
+              value={form.theme_color || "#2c261e"}
+              onChange={(e) => setForm({ ...form, theme_color: e.target.value })}
             />
             <input
               type="text"
-              value={form.background_color}
-              onChange={(e) => setForm({ ...form, background_color: e.target.value })}
+              value={form.theme_color}
+              onChange={(e) => setForm({ ...form, theme_color: e.target.value })}
               placeholder="#2c261e"
             />
           </div>
         </div>
+        <div className="field">
+          <label>Imagem na faixa (opcional)</label>
+          <input type="file" accept="image/*" onChange={(e) => handleUpload("theme_image", e.target.files[0])} />
+          {form.theme_image && <span className="muted">{form.theme_image}</span>}
+        </div>
+
+        <h3>Fundo da página</h3>
+        <div className="field">
+          <label>Cor de fundo da página</label>
+          <div className="color-field-row">
+            <input
+              type="color"
+              value={form.page_bg_color || "#1b1815"}
+              onChange={(e) => setForm({ ...form, page_bg_color: e.target.value })}
+            />
+            <input
+              type="text"
+              value={form.page_bg_color}
+              onChange={(e) => setForm({ ...form, page_bg_color: e.target.value })}
+              placeholder="#1b1815"
+            />
+          </div>
+        </div>
+        <div className="field">
+          <label>Imagem de fundo da página (opcional)</label>
+          <input type="file" accept="image/*" onChange={(e) => handleUpload("page_bg_image", e.target.files[0])} />
+          {form.page_bg_image && <span className="muted">{form.page_bg_image}</span>}
+        </div>
+        <div className="field checkbox-field">
+          <label>
+            <input
+              type="checkbox"
+              checked={form.page_bg_repeat}
+              onChange={(e) => setForm({ ...form, page_bg_repeat: e.target.checked })}
+            />
+            Repetir a imagem como textura (em vez de uma imagem única)
+          </label>
+        </div>
+
         <div className="field">
           <label>Link do GitHub (opcional)</label>
           <input value={form.github_link} onChange={(e) => setForm({ ...form, github_link: e.target.value })} />
