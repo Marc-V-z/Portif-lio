@@ -2,6 +2,8 @@
 
 Portfólio pessoal full-stack: página pública com grade de projetos, uma página própria pra cada projeto (capa, descrição, cor ou imagem de fundo escolhida por você, e uma linha do tempo de posts), e um painel administrativo pra gerenciar tudo. Serve tanto pra uso pessoal quanto como base pra qualquer pessoa clonar e adaptar do seu jeito.
 
+<img width="150" height="150" alt="Image" src="https://github.com/user-attachments/assets/e0da5a2d-bb22-465a-bfa6-4dd5ec4b0ba0" />
+
 ## Funcionalidades
 
 - Grade de projetos na home (pública, sem necessidade de login)
