@@ -1,4 +1,4 @@
-# Portfólio
+# Projeto Portfólio Palico
 
 Portfólio pessoal full-stack: página pública com grade de projetos, uma página própria pra cada projeto (capa, descrição, cor ou imagem de fundo escolhida por você, e uma linha do tempo de posts), e um painel administrativo pra gerenciar tudo. Serve tanto pra uso pessoal quanto como base pra qualquer pessoa clonar e adaptar do seu jeito.
 
