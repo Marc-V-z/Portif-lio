@@ -8,7 +8,7 @@ Portfólio pessoal full-stack: página pública com grade de projetos, uma pági
 
 - Grade de projetos na home (pública, sem necessidade de login)
 - Página individual por projeto, com posts/atualizações em ordem cronológica
-- Cada post é uma sequência livre de blocos — texto, imagem, gif, vídeo (arquivo ou link do YouTube/Vimeo) e links — nenhum tipo é obrigatório e não há limite de blocos
+- Cada post é uma sequência livre de blocos - texto, imagem, gif, vídeo (arquivo ou link do YouTube/Vimeo) e links - nenhum tipo é obrigatório e não há limite de blocos
 - Painel administrativo protegido por login (JWT) pra criar, editar e excluir projetos e posts
 - Formulário de contato público
 
@@ -136,7 +136,7 @@ cd ../front-end
 npm install
 ```
 
-Nenhuma variável de ambiente é obrigatória aqui — por padrão o front-end conversa com `http://localhost:5000`. Se seu back-end estiver em outro endereço, crie `front-end/.env.local`:
+Por padrão o front-end conversa com `http://localhost:5000`. Se seu back-end estiver em outro endereço, crie `front-end/.env.local`:
 
 ```
 REACT_APP_API_URL=http://seu-back-end:porta
@@ -172,9 +172,9 @@ O site abre em `http://localhost:3000`. O painel administrativo fica em `http://
 
 **Logar:** vá em `/admin/login` e entre com o email/senha criados no passo 5 da instalação.
 
-**Criar um projeto:** `/admin` → **Novo projeto**. Preencha o *slug* (parte da URL — `meu-jogo` vira `/projeto/meu-jogo`, precisa ser único), título, descrição, capa, e opcionalmente uma imagem ou cor de fundo pra página do projeto.
+**Criar um projeto:** `/admin` → **Novo projeto**. Preencha o *slug* (parte da URL, `meu-jogo` vira `/projeto/meu-jogo`, precisa ser único), título, descrição, capa, e opcionalmente uma imagem ou cor de fundo pra página do projeto.
 
-**Adicionar posts:** dentro da tela de edição de um projeto, em **Posts** → **Novo post**. Cada post é uma lista de blocos — clique em **+ Adicionar bloco** quantas vezes quiser e escolha o tipo de cada um (texto, imagem, gif, vídeo ou link). Pra vídeo, prefira colar um link do YouTube/Vimeo; upload direto de arquivo tem limite de 20MB.
+**Adicionar posts:** dentro da tela de edição de um projeto, em **Posts** → **Novo post**. Cada post é uma lista de blocos, clique em **+ Adicionar bloco** quantas vezes quiser e escolha o tipo de cada um (texto, imagem, gif, vídeo ou link). Pra vídeo, prefira colar um link do YouTube/Vimeo; upload direto de arquivo tem limite de 20MB.
 
 **Editar ou excluir:** os botões correspondentes aparecem ao lado de cada projeto/post no painel. Excluir um projeto apaga também todos os posts dele.
 
@@ -189,7 +189,7 @@ O site abre em `http://localhost:3000`. O painel administrativo fica em `http://
 | Variável | Descrição |
 |---|---|
 | `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_NAME`, `DB_PORT` | Credenciais de conexão com o Postgres |
-| `JWT_SECRET` | Chave usada pra assinar os tokens de login — mantenha em segredo, nunca comite no git |
+| `JWT_SECRET` | Chave usada pra assinar os tokens de login (mantenha em segredo, nunca comite no git) |
 | `PORT` | Porta em que o back-end sobe (padrão 5000) |
 
 ### `front-end/.env.local` (opcional)
@@ -205,7 +205,7 @@ O site abre em `http://localhost:3000`. O painel administrativo fica em `http://
 ```
 back-end/
   middleware/   # verificação de token JWT
-  models/       # schema.sql — estrutura do banco
+  models/       # schema.sql  (estrutura do banco)
   routes/       # rotas da API (auth, projects, posts, upload, contact)
   uploads/      # arquivos de mídia enviados (criado automaticamente)
   seed.js       # cria/atualiza o admin
