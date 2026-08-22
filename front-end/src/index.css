@@ -104,8 +104,8 @@ h1, h2, h3, h4 {
   border-top: 3px solid var(--project-accent, var(--border));
   transition: transform 0.15s ease;
 }
-.project-card:hover { transform: translateY(-3px); }
-/*.project-card:hover {  transform: scale(1.3);  transition: 2s;  }     ainda em observação!*/
+.project-card:hover { transform: translateY(-10px); }
+/*.project-card:hover {  transform: scale(1.1 );  transition: 0.5s;  }     ainda em observação!*/
 .project-card__cover { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--bg-raised-2); }
 .project-card__body { padding: 16px 18px 20px; }
 .project-card__title { font-family: var(--font-display); font-size: 1.05rem; margin: 0; }
@@ -125,7 +125,7 @@ h1, h2, h3, h4 {
 .post-feed { position: relative; padding: 56px 0 80px; max-width: 720px; }
 .post-feed::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
 .post { position: relative; padding-left: 32px; margin-bottom: 40px; }
-.post::before { content: ""; position: absolute; left: 0; top: 6px; width: 11px; height: 11px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+
 .post__title { font-size: 1.1rem; margin-bottom: 12px; }
 .post-media { margin-bottom: 12px; }
 .post-media--text { white-space: pre-wrap; }
@@ -171,9 +171,6 @@ h1, h2, h3, h4 {
 /* Formato de capa alternativo (segue a proporção natural da imagem) */
 .project-card__cover--natural { aspect-ratio: auto; height: auto; object-fit: contain; }
 
-/* Bolinha do post passa a seguir a cor do tema do projeto */
-.post::before { background: var(--project-accent, var(--accent)); }
-
 /* Fundo real da página do projeto (diferente da faixa de tema) */
 .page-bg {
   background-color: var(--page-bg-color, var(--bg));
@@ -190,3 +187,38 @@ h1, h2, h3, h4 {
 /* Checkbox de textura repetida */
 .checkbox-field label { display: flex; align-items: center; gap: 8px; color: var(--text); font-size: 0.9rem; cursor: pointer; }
 .checkbox-field input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+
+/* indica data de cada post */
+.post__marker {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--project-accent, var(--accent));
+  border: 2px solid var(--bg);
+  cursor: default;
+}
+
+.post__marker-tooltip {
+  position: absolute;
+  left: 20px;
+  top: -6px;
+  background: var(--text);
+  color: var(--bg);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.post__marker:hover .post__marker-tooltip {
+  opacity: 1;
+  visibility: visible;
+}

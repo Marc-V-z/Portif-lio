@@ -4,6 +4,16 @@ import client from "../api/client";
 import { resolveMediaUrl } from "../utils/media";
 import PostBlock from "../components/PostBlock";
 
+function formatPostDate(post) {
+  if (!post.created_at) return null;
+  const created = new Date(post.created_at).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+  return `Criado em ${created}`;
+}
+
 function ProjectPage() {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
@@ -58,14 +68,20 @@ function ProjectPage() {
           <p className="empty-state">Nenhuma atualização publicada ainda.</p>
         ) : (
           <div className="post-feed" style={feedStyle}>
-            {project.posts.map((post) => (
-              <div className="post" key={post.id}>
-                {post.title && <h3 className="post__title">{post.title}</h3>}
-                {post.media.map((block) => (
-                  <PostBlock key={block.id} block={block} />
-                ))}
-              </div>
-            ))}
+            {project.posts.map((post) => {
+              const dateLabel = formatPostDate(post);
+              return (
+                <div className="post" key={post.id}>
+                  <span className="post__marker">
+                    {dateLabel && <span className="post__marker-tooltip">{dateLabel}</span>}
+                  </span>
+                  {post.title && <h3 className="post__title">{post.title}</h3>}
+                  {post.media.map((block) => (
+                    <PostBlock key={block.id} block={block} />
+                  ))}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

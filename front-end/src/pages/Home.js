@@ -23,7 +23,7 @@ function Home() {
   if (error) {
     return (
       <div className="container">
-        <p className="empty-state">Não foi possível carregar os projetos. O back-end está rodando?</p>
+        <p className="empty-state">Não foi possível carregar os projetos. Verifique o servidor</p>
       </div>
     );
   }
